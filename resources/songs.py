@@ -21,3 +21,18 @@ def create_song():
     print(model_to_dict(song), 'model to dict')
     song_dict = model_to_dict(song)
     return jsonify(data=song_dict, status={"code": 201, "message": "Success"})
+
+#UPDATE
+@song.route('/<id>', methods=["PUT"])
+def update_song(id):
+    payload = request.get_json()
+    query = models.Song.update(**payload).where(models.Song.id==id)
+    query.execute()
+    return jsonify(data=model_to_dict(models.Song.get_by_id(id)), status={"code": 200, "message": "resource updated successfully"})
+
+#DELETE
+@song.route('/<id>', methods=["DELETE"])
+def delete_song(id):
+    query = models.Song.delete().where(models.Song.id==id)
+    query.execute()
+    return jsonify(data='resource successfully deleted', status={"code": 200, "message": "resource deleted successfully"})
