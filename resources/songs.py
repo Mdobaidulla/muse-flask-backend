@@ -14,6 +14,14 @@ def get_all_songs():
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
+#SHOW ROUTE   
+@song.route('/<id>', methods=["GET"])
+def get_one_song(id):
+    print(id, 'reserved word?')
+    song = models.Song.get_by_id(id)
+    print(song.__dict__)
+    return jsonify(data=model_to_dict(song), status={"code": 200, "message": "Success"})
+
 @song.route('/', methods=["POST"])
 def create_song():
     payload = request.get_json()
